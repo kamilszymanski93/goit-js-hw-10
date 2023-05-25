@@ -1,23 +1,21 @@
-// const KEY =
-//   'live_idIZYnecHH32vszveU4i2ziq4wdKrE7fa9zUSVuW6nPGuGlzHOwUNGhn4t1Su8ey';
 const catBreeds =
-  'https://api.thecatapi.com/v1/breeds?api_key=live_idIZYnecHH32vszveU4i2ziq4wdKrE7fa9zUSVuW6nPGuGlzHOwUNGhn4t1Su8ey';
-catFilter = document.querySelector('.breed-select');
+  'https://api.thecatapi.com/v1/breeds?api_key=live_Fz088v06Oa2T3XenHKHYugySNsNfigXS6fNayyqL7kr3aLZlb8CDJIPNgxqHR5AO';
+
+const catFilter = document.querySelector('.breed-select');
 const chosenCatInfo = 'https://api.thecatapi.com/v1/images/search';
-let loadingInfo;
+let loading;
 let errorInfo;
-loadingInfo = document.querySelector('.loader');
+loading = document.querySelector('.loader');
 errorInfo = document.querySelector('.error');
 const catCard = document.querySelector('.cat-info');
-function hideAlert(alertVisible) {
-  alertVisible.classList.add('hidden');
+function hideAlert(loader) {
+  loader.classList.add('hidden');
 }
-hideAlert(loadingInfo);
-
-function showAlert(alertVisible) {
-  alertVisible.classList.remove('hidden');
+hideAlert(loading);
+hideAlert(errorInfo);
+function showAlert(loader) {
+  loader.classList.remove('hidden');
 }
-showAlert(errorInfo);
 function pingUrl(url) {
   return new Promise((resolve, reject) => {
     fetch(url)
@@ -49,7 +47,7 @@ function fetchCatByBreed(breedId) {
   const catUrl = `${chosenCatInfo}?breed_ids=${breedId}`;
   pingUrl(catUrl)
     .then(data => {
-      const pictureLink = `<div><img src="${data[0].url}" class="cat-pic"></div>`;
+      const pictureLink = `<div><img src="${data[0].url}" class= "cat-pic"></div>`;
       catCard.insertAdjacentHTML('afterbegin', pictureLink);
     })
     .catch(err => {
@@ -58,7 +56,7 @@ function fetchCatByBreed(breedId) {
   const catInfo = `https://api.thecatapi.com/v1/breeds/${breedId}`;
   pingUrl(catInfo)
     .then(data => {
-      const catDesciption = `<div class="cat-txt"><h1>${data.name}</h1><p>${data.description}</p><h2>Temperament</h2><p>${data.temperament}</p></div>`;
+      const catDesciption = `<div class = "cat-txt"><h1>${data.name}</h1><p>${data.description}</p><h2>Temperament</h2><p>${data.temperament}</p></div>`;
       catCard.insertAdjacentHTML('beforeend', catDesciption);
     })
     .catch(err => {
@@ -67,11 +65,12 @@ function fetchCatByBreed(breedId) {
 }
 
 function handleFilterForm(e) {
-  showAlert(loadingInfo);
+  hideAlert(errorInfo);
+  showAlert(loading);
   catCard.innerHTML = '';
   fetchCatByBreed(e.target.value);
   setTimeout(function () {
-    hideAlert(loadingInfo);
+    hideAlert(loading);
   }, 500);
 }
 
